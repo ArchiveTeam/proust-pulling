@@ -39,7 +39,7 @@ cmd = [
   WGET_WARC,
   "-U " + E[USER_AGENT],
   "-o " + E["#{warc_file}.log"],
-  "-e 'robots=off'",
+  "-e robots=off",
   "--warc-file=" + E[warc_file],
   "--warc-max-size=inf",
   "--warc-cdx",
