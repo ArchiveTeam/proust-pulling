@@ -3,6 +3,7 @@ GEM
   specs:
     domain_name (0.5.1)
       unf (~> 0.0.3)
+    escape (0.0.4)
     mechanize (2.1)
       domain_name (~> 0.5, >= 0.5.1)
       net-http-digest_auth (~> 1.1, >= 1.1.1)
@@ -25,5 +26,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  escape
   mechanize
   redis
