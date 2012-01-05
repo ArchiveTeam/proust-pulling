@@ -17,14 +17,6 @@ end
 
 uid = URI.encode(ARGV[0])
 
-ACCEPT = %W(
-  story/#{uid}
-  pi*
-  img*
-  js*
-  css*
-).join(',')
-
 E           = lambda { |word| Escape.shell_single_word(word) }
 URL         = lambda { |rest| E["http://www.proust.com/story/#{uid}/#{rest}"] }
 VERSION     = `git log -n1 --oneline #{$0} | awk '{print $1}'`.chomp
