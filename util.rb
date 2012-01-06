@@ -39,7 +39,15 @@ module Util
       URL[uid, 'map'],
       URL[uid, 'timeline'],
       URL[uid, 'memorabilia'],
-      URL[uid, 'tagged']
+      URL[uid, 'tagged'],
+
+      # External Javascripts
+      "http://www.google.com/jsapi",
+      "http://platform.twitter.com/widgets.js",
+      "http://use.typekit.com/bju4bye.js",
+      "http://edge.quantserve.com/quant.js",
+      "https://apis.google.com/js/plusone.js",
+      "http://www.google-analytics.com/ga.js"
     ].join(' ')
   end
 end
