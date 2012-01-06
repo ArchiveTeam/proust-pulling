@@ -2,10 +2,13 @@
 
 require 'fileutils'
 require 'mechanize'
+require 'logger'
 require File.expand_path('../util', __FILE__)
 
 include FileUtils
 include Util
+
+LOG = Logger.new($stderr)
 
 # The URLs to image memorabilia are all of the form
 #
@@ -27,12 +30,12 @@ list_file = list_file_for(uid)
 
 mkdir_p File.dirname(list_file), :verbose => true
 
-$stderr.puts "Retrieving #{url}"
+LOG.info "Retrieving #{url}"
 
 begin
   page = agent.get(url)
 rescue Mechanize::ResponseCodeError => e
-  $stderr.puts "Code #{e.response_code} returned while fetching #{url}; writing blank file"
+  LOG.warn "Code #{e.response_code} returned while fetching #{url}; writing blank file"
   `touch #{list_file}`
   exit 0
 end
@@ -41,7 +44,7 @@ File.open(list_file, 'w') do |f|
   loop do
     page_num = (page/'#pagePagNumShow').text.strip
 
-    $stderr.puts page_num
+    LOG.debug page_num
 
     (page/'.memBoxGridContainer a.imageFrame').each do |l|
       f.puts "http://www.proust.com#{l.attribute('href').text}"

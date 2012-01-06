@@ -1,4 +1,7 @@
+#!/usr/bin/env ruby
+
 require 'redis'
+require 'logger'
 require 'escape'
 
 r = Redis.new
@@ -17,6 +20,8 @@ TODO    = 'proust_todo'
 
 r.sdiffstore TODO, KNOWN, DONE
 
+LOG = Logger.new($stderr)
+
 loop do
   member = r.srandmember(TODO).tap do |m|
     if m
@@ -26,17 +31,17 @@ loop do
         r.setex "proust_#{m}_watch", (60 * 60 * 2), 1
       end
     else
-      $stderr.puts "Nothing left to do."
+      LOG.info "Nothing left to do."
       exit 0
     end
   end
 
-  $stderr.puts "Fetching data for #{member}."
+  LOG.info "Fetching data for #{member}."
 
   system("./get_one_story.rb #{Escape.shell_single_word(member)}")
 
   if $? == 0
-    $stderr.puts "Retrieved #{member} successfully."
+    LOG.info "Retrieved #{member} successfully."
 
     r.multi do
       r.sadd DONE, member
@@ -44,6 +49,6 @@ loop do
       r.del "proust_#{member}_watch"
     end
   else
-    $stderr.puts "Errors encountered retrieving #{member}."
+    LOG.error "Errors encountered retrieving #{member}."
   end
 end

@@ -2,6 +2,9 @@
 
 require File.expand_path('../util', __FILE__)
 require 'fileutils'
+require 'logger'
+
+LOG = Logger.new($stderr)
 
 include FileUtils
 include Util
@@ -12,6 +15,7 @@ end
 
 def only_404s?(log_file)
   errors = `grep ERROR #{log_file}`.split("\n")
+  LOG.debug "Examining #{errors.length} errors."
 
   errors.all? { |e| e =~ /ERROR 404/ }
 end
@@ -32,7 +36,7 @@ rm_rf fetch_target, :verbose => true
 mkdir_p fetch_target, :verbose => true
 
 cmd = wget_command_for(user)
-$stderr.puts cmd
+LOG.debug cmd
 
 Dir.chdir(fetch_target) { `#{cmd}` }
 
@@ -43,12 +47,13 @@ else
 
   # Exit status 8: "Server issued an error response"
   if status == 8
+    LOG.warn "wget says the server issued errors; checking errors."
     # Scan the log for errors.  If all we see are 404s, then it's probably ok.
     if only_404s?(log_for(user))
-      $stderr.puts "wget detected 404s; exiting normally."
+      LOG.info "All error responses are 404s; exiting normally."
       exit 0
     else
-      $stderr.puts "wget exited with status #{status}."
+      LOG.error "Non-404 error responses detected; exiting with status #{status}."
       exit status
     end
   end
