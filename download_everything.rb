@@ -47,7 +47,7 @@ Dir.chdir(DEST) do
   cmd = [
     Util::WGET_WARC,
     "-U " + Util::E[Util::USER_AGENT],
-    "-o " + Util::E[DEST + '.log'],
+    "-o " + Util::E[warc_file + '.log'],
     "-e robots=off",
     "--warc-file=" + Util::E[warc_file],
     "--warc-max-size=inf",
