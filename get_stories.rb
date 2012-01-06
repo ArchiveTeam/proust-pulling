@@ -4,19 +4,9 @@ require 'redis'
 require 'logger'
 require 'escape'
 
+require File.expand_path('../redis_config', __FILE__)
+
 r = Redis.new
-
-# All known users.
-KNOWN   = 'proust_users'
-
-# Downloads in progress.
-WORKING = 'proust_working'
-
-# Downloads completed.
-DONE    = 'proust_done'
-
-# Pending - done.
-TODO    = 'proust_todo'
 
 r.sdiffstore TODO, KNOWN, DONE
 
