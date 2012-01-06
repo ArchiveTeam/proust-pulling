@@ -12,8 +12,13 @@ module Util
     "#{DOWNLOAD_TO}/#{uid[0..0]}/#{uid[0..1]}/#{uid[0..2]}/#{uid}/#{uid}"
   end
 
+  def list_file_for(uid)
+    "#{warc_path_for(uid)}.memorabilia"
+  end
+
   def wget_command_for(uid)
     warc_file = warc_path_for(uid)
+    list_file = list_file_for(uid)
 
     [
       WGET_WARC,
@@ -34,6 +39,11 @@ module Util
       "--no-timestamping",
       "--page-requisites",
       "--trust-server-names",
+
+      # Memorabilia image URLs
+      "-i " + E[list_file],
+
+      # Root URLs of stories
       URL[uid, ''],
       URL[uid, 'all'],
       URL[uid, 'map'],
