@@ -27,9 +27,15 @@ list_file = list_file_for(uid)
 
 mkdir_p File.dirname(list_file), :verbose => true
 
-puts "Retrieving memorabilia image URLs"
+$stderr.puts "Retrieving #{url}"
 
-page = agent.get(url)
+begin
+  page = agent.get(url)
+rescue Mechanize::ResponseCodeError => e
+  $stderr.puts "Code #{e.response_code} returned while fetching #{url}; writing blank file"
+  `touch #{list_file}`
+  exit 0
+end
 
 File.open(list_file, 'w') do |f|
   loop do
