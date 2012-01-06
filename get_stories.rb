@@ -36,7 +36,7 @@ loop do
 
   $stderr.puts "Fetching data for #{member}."
 
-  `./get_one_story.rb #{Escape.shell_single_word(member)}`
+  system("./get_one_story.rb #{Escape.shell_single_word(member)}")
 
   if $? == 0
     $stderr.puts "Retrieved #{member} successfully."
