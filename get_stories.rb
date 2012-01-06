@@ -36,9 +36,7 @@ loop do
 
   puts "Fetching data for #{member}."
 
-  cmd = `./gen_story_cmd.rb #{Escape.shell_single_word(member)}`
-  puts cmd
-  `#{cmd}`
+  `./get_one_story.rb #{Escape.shell_single_word(member)}`
 
   if $? == 0
     puts "Retrieved #{member} successfully."
