@@ -16,14 +16,19 @@ module Util
     "#{warc_path_for(uid)}.memorabilia"
   end
 
+  def log_for(uid)
+    "#{warc_path_for(uid)}.log"
+  end
+
   def wget_command_for(uid)
     warc_file = warc_path_for(uid)
     list_file = list_file_for(uid)
+    log_file = log_for(uid)
 
     [
       WGET_WARC,
       "-U " + E[USER_AGENT],
-      "-o " + E["#{warc_file}.log"],
+      "-o " + E[log_file],
       "-e robots=off",
       "--warc-file=" + E[warc_file],
       "--warc-max-size=inf",

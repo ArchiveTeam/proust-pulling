@@ -10,6 +10,12 @@ def usage
   $stderr.puts "#{$0} [user ID]"
 end
 
+def only_404s?(log_file)
+  errors = `grep ERROR #{log_file}`.split("\n")
+
+  errors.all? { |e| e =~ /ERROR 404/ }
+end
+
 unless ARGV[0]
   usage
   exit 1
@@ -33,5 +39,17 @@ Dir.chdir(fetch_target) { `#{cmd}` }
 if $?.success?
   exit 0
 else
-  exit $?.exitstatus
+  status = $?.exitstatus
+
+  # Exit status 8: "Server issued an error response"
+  if status == 8
+    # Scan the log for errors.  If all we see are 404s, then it's probably ok.
+    if only_404s?(log_for(user))
+      $stderr.puts "wget detected 404s; exiting normally."
+      exit 0
+    else
+      $stderr.puts "wget exited with status #{status}."
+      exit status
+    end
+  end
 end
