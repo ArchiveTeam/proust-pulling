@@ -19,6 +19,8 @@ user = ARGV[0]
 warc_file = warc_path_for(user)
 mkdir_p File.dirname(warc_file), :verbose => true
 
+`./get_memorabilia_urls.rb #{user}`
+
 fetch_target = File.join(File.dirname(warc_file), 'fetch')
 rm_rf fetch_target, :verbose => true
 mkdir_p fetch_target, :verbose => true
