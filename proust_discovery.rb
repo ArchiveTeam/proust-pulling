@@ -13,10 +13,6 @@ end
 page = agent.get 'http://www.proust.com/people'
 
 loop do
-  has_next = !(page/'a.next').empty?
-
-  break unless has_next
-
   (page/'.SEOPeopleOnProustDetails a.standardBlueLink').each do |l|
     r.sadd 'proust_stories', l.attribute('href').text
   end
@@ -25,7 +21,11 @@ loop do
 
   puts "Proust index page: #{page.uri}, discovered #{count} stories"
 
-  page = agent.click /Next/
+  has_next = !(page/'a.next').empty?
+
+  break unless has_next
+
+  page = agent.click /^\s*Next/
 
   sleep rand(5)
 end
