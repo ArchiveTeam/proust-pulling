@@ -41,7 +41,7 @@ loop do
     r.multi do
       r.sadd DONE, member
       r.srem WORKING, member
-      r.del "proust_#{m}_watch"
+      r.del "proust_#{member}_watch"
     end
   else
     $stderr.puts "Errors encountered retrieving #{member}."
