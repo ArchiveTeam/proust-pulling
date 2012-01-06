@@ -29,23 +29,23 @@ loop do
         r.sadd WORKING, m
       end
     else
-      puts "Nothing left to do."
+      $stderr.puts "Nothing left to do."
       exit 0
     end
   end
 
-  puts "Fetching data for #{member}."
+  $stderr.puts "Fetching data for #{member}."
 
   `./get_one_story.rb #{Escape.shell_single_word(member)}`
 
   if $? == 0
-    puts "Retrieved #{member} successfully."
+    $stderr.puts "Retrieved #{member} successfully."
 
     r.multi do
       r.sadd DONE, member
       r.srem WORKING, member
     end
   else
-    puts "Errors encountered retrieving #{member}."
+    $stderr.puts "Errors encountered retrieving #{member}."
   end
 end

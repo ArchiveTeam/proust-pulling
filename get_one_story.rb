@@ -7,7 +7,7 @@ include FileUtils
 include Util
 
 def usage
-  puts "#{$0} [user ID]"
+  $stderr.puts "#{$0} [user ID]"
 end
 
 unless ARGV[0]
@@ -26,7 +26,7 @@ rm_rf fetch_target, :verbose => true
 mkdir_p fetch_target, :verbose => true
 
 cmd = wget_command_for(user)
-puts cmd
+$stderr.puts cmd
 
 Dir.chdir(fetch_target) { `#{cmd}` }
 

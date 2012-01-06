@@ -35,7 +35,7 @@ File.open(list_file, 'w') do |f|
   loop do
     page_num = (page/'#pagePagNumShow').text.strip
 
-    puts page_num
+    $stderr.puts page_num
 
     (page/'.memBoxGridContainer a.imageFrame').each do |l|
       f.puts "http://www.proust.com#{l.attribute('href').text}"
