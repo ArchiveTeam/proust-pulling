@@ -41,6 +41,7 @@ LOG.debug cmd
 Dir.chdir(fetch_target) { `#{cmd}` }
 
 if $?.success?
+  rm_rf fetch_target, :verbose => true
   exit 0
 else
   status = $?.exitstatus
@@ -51,6 +52,7 @@ else
     # Scan the log for errors.  If all we see are 404s, then it's probably ok.
     if only_404s?(log_for(user))
       LOG.info "All error responses are 404s; exiting normally."
+      rm_rf fetch_target, :verbose => true
       exit 0
     else
       LOG.error "Non-404 error responses detected; exiting with status #{status}."
