@@ -9,3 +9,6 @@ DONE    = 'proust_done'
 
 # Pending - done.
 TODO    = 'proust_todo'
+
+# Private members.
+PRIVATE = 'proust_private'
