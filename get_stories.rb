@@ -46,7 +46,16 @@ loop do
 
   # Check if the member's story is private.  If it is, file it as private and
   # move on to another member.
-  page = agent.get(Util::URL[member, ''])
+  page = begin
+           agent.get(Util::URL[member, ''])
+         rescue Mechanize::ResponseCodeError => e
+           LOG.warn "Encountered #{e.response_code} while retrieving #{member}."
+           r.sadd ERROR, member
+           r.hmset ERROR_CODES, member, e.response_code
+           finish member, r
+           next
+         end
+
   marker = (page/'#psbLeftHalf').text.strip
 
   LOG.debug marker

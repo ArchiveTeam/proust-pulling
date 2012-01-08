@@ -12,3 +12,9 @@ TODO    = 'proust_todo'
 
 # Private members.
 PRIVATE = 'proust_private'
+
+# Retrieval of these members resulted in an error.
+ERROR = 'proust_errors'
+
+# And here's the returned status code.
+ERROR_CODES = 'proust_error_codes'
