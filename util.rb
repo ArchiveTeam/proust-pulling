@@ -2,7 +2,7 @@ require 'escape'
 
 module Util
   E           = lambda { |word| Escape.shell_single_word(word) }
-  URL         = lambda { |uid, rest| E["http://www.proust.com/story/#{uid}/#{rest}"] }
+  URL         = lambda { |uid, rest| "http://www.proust.com/story/#{uid}/#{rest}" }
   VERSION     = `git log -n1 --oneline #{$0} | awk '{print $1}'`.chomp
   WGET_WARC   = File.expand_path('../wget-warc', __FILE__)
   USER_AGENT  = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.54 Safari/535.2'
@@ -49,12 +49,12 @@ module Util
       "-i " + E[list_file],
 
       # Root URLs of stories
-      URL[uid, ''],
-      URL[uid, 'all'],
-      URL[uid, 'map'],
-      URL[uid, 'timeline'],
-      URL[uid, 'memorabilia'],
-      URL[uid, 'tagged'],
+      E[URL[uid, '']],
+      E[URL[uid, 'all']],
+      E[URL[uid, 'map']],
+      E[URL[uid, 'timeline']],
+      E[URL[uid, 'memorabilia']],
+      E[URL[uid, 'tagged']],
 
       # External Javascripts
       "http://www.google.com/jsapi",
